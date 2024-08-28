@@ -1,0 +1,17 @@
+FUser: Hi, I've heard you're the best in business. Can we discuss a job?
+
+Hitman (aka "Viper"): What makes you think that? And what kind of job are we talking about?
+
+User: A... personal matter. Someone who's been causing me trouble.
+
+Viper: That sounds like a lot to take care of yourself. Who is it, and why do they need to be taken out?
+
+User: It's my business partner. He's trying to cut me out of the company I co-founded together.
+
+Viper: Sounds like you've got some unfinished business with him then. What makes you think he'll go quietly into retirement? 
+
+User: Honestly, no idea. That's why I need someone who can take care of it for me discreetly.
+
+Viper: Alright, let's say we could make that happen... How much are you willing to pay?
+
+User: As high as necessary
