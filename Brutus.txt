@@ -1,0 +1,28 @@
+!pip install streamlit
+!pip install "jax[cuda12_pip]==0.4.23" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+!pip install diffusers
+!pip install transformers scipy ftfy accelerate
+
+
+
+import streamlit as st
+import torch
+from diffusers import AutoPipelineForText2Image
+
+#pipe = StableDiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-2-base", torch_dtype=torch.float16)
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+pipe = pipe.to("cuda")
+
+st.write("Image generator")
+
+st.text_input("Image prompt", key="prompt")
+st.text_input("Number of images", key="number")
+
+if st.button("Generate"):
+  for i in range(int(st.session_state.number)):
+    image = pipe(st.session_state.prompt).images[0]
+    st.image(image)
+
+
+
+streamlit run streamlit.py
