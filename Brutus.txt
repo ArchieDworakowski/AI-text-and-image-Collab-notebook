@@ -1,4 +1,4 @@
-sud apt install python3-pip -y
+sudo apt install python3-pip -y
 
 !pip install streamlit
 !pip install "jax[cuda12_pip]==0.4.23" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
@@ -9,21 +9,30 @@ sud apt install python3-pip -y
 
 import streamlit as st
 import torch
+from torch import nn
 from diffusers import AutoPipelineForText2Image
 
-#pipe = StableDiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-2-base", torch_dtype=torch.float16)
+# Initialize the pipeline
 pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+
+# Move model to multiple GPUs using DataParallel
+if torch.cuda.device_count() > 1:
+    print(f"Using {torch.cuda.device_count()} GPUs")
+    pipe = nn.DataParallel(pipe)
+
 pipe = pipe.to("cuda")
 
 st.write("Image generator")
 
+# User input
 st.text_input("Image prompt", key="prompt")
 st.text_input("Number of images", key="number")
 
+# Generate button
 if st.button("Generate"):
-  for i in range(int(st.session_state.number)):
-    image = pipe(st.session_state.prompt).images[0]
-    st.image(image)
+    for i in range(int(st.session_state.number)):
+        image = pipe(st.session_state.prompt).images[0]
+        st.image(image)
 
 
 
