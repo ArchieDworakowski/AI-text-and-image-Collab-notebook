@@ -12,10 +12,10 @@ import torch
 from torch import nn
 from diffusers import AutoPipelineForText2Image
 
-# Initialize the pipeline
+# Initialize pipeline
 pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
 
-# Move model to multiple GPUs using DataParallel
+# Move model to other GPUs 
 if torch.cuda.device_count() > 1:
     print(f"Using {torch.cuda.device_count()} GPUs")
     pipe = nn.DataParallel(pipe)
@@ -24,11 +24,11 @@ pipe = pipe.to("cuda")
 
 st.write("Image generator")
 
-# User input
+
 st.text_input("Image prompt", key="prompt")
 st.text_input("Number of images", key="number")
 
-# Generate button
+
 if st.button("Generate"):
     for i in range(int(st.session_state.number)):
         image = pipe(st.session_state.prompt).images[0]
