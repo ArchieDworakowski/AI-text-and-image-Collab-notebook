@@ -14,6 +14,7 @@ from diffusers import DiffusionPipeline
 
 # Initialize pipeline
 pipe = DiffusionPipeline.from_pretrained("black-forest-labs/FLUX.1-schnell")
+pipe.enable_model_cpu_offload()
 
 # Move model to other GPUs 
 if torch.cuda.device_count() > 1:
