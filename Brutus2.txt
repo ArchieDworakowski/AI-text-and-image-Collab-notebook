@@ -1,0 +1,25 @@
+import streamlit as st
+import tensorflow as tf
+from diffusers import DiffusionPipeline
+
+# Initialize pipeline
+pipe = DiffusionPipeline.from_pretrained("black-forest-labs/FLUX.1-schnell")
+pipe.enable_model_cpu_offload()
+
+# Set up MirroredStrategy for multiple GPU utilization
+strategy = tf.distribute.MirroredStrategy()
+
+print(f"Using {strategy.num_replicas_in_sync} GPUs")
+
+# Use strategy.scope() to ensure that all operations are distributed
+with strategy.scope():
+    st.write("Image generator")
+
+    st.text_input("Image prompt", key="prompt")
+    st.text_input("Number of images", key="number")
+
+    if st.button("Generate"):
+        for i in range(int(st.session_state.number)):
+            image = pipe(st.session_state.prompt).images[0]
+            st.image(image)
+
