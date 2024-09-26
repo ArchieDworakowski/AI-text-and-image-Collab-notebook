@@ -38,3 +38,22 @@ if st.button("Generate"):
 
 
 streamlit run streamlit.py
+
+
+import streamlit as st
+import torch
+from diffusers import StableDiffusionPipeline
+
+pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
+
+pipe = pipe.to("cuda")
+
+st.write("Image generator")
+
+st.text_input("Image prompt", key="prompt")
+st.text_input("Number of images", key="number")
+
+if st.button("Generate"):
+  for i in range(int(st.session_state.number)):
+    image = pipe(st.session_state.prompt).images[0]
+    st.image(image)
